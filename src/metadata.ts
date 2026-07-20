@@ -14,9 +14,7 @@ export function getRlsPolicy<Claims = unknown, T = unknown>(
   entity: Function,
 ): RlsPolicy<Claims, T> | undefined {
   if (isRlsExempt(entity)) return undefined;
-  const fromDecorator = Reflect.getMetadata(RLS_POLICY, entity) as
-    | RlsPolicy<Claims, T>
-    | undefined;
+  const fromDecorator = Reflect.getMetadata(RLS_POLICY, entity) as RlsPolicy<Claims, T> | undefined;
   if (fromDecorator) return fromDecorator;
   return (entity as { rls?: RlsPolicy<Claims, T> }).rls;
 }

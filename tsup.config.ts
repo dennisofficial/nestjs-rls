@@ -14,12 +14,7 @@ const external = [
 ];
 
 export default defineConfig({
-  entry: [
-    'src/index.ts',
-    'src/nest/index.ts',
-    'src/typeorm/index.ts',
-    'src/pg-realtime/index.ts',
-  ],
+  entry: ['src/index.ts', 'src/nest/index.ts', 'src/typeorm/index.ts', 'src/pg-realtime/index.ts'],
   format: ['cjs', 'esm'],
   dts: false,
   splitting: true,

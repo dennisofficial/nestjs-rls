@@ -8,12 +8,15 @@ import {
   type Repository,
   UpdateResult,
 } from 'typeorm';
-import type { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity/QueryPartialEntity';
 import { getRlsPolicy } from '../metadata';
 import { applyPolicy } from '../policy';
 import { mergeScopedWhere, toFindOptionsWhere } from '../typeorm';
 import type { MingoFilter, RlsAction, RlsContextConfig } from '../types';
 import { RlsForbiddenError } from './errors';
+
+/** The exact argument types TypeORM's repo methods expect, derived to avoid deep imports. */
+type InsertArg<T extends ObjectLiteral> = Parameters<Repository<T>['insert']>[0];
+type UpdatePartial<T extends ObjectLiteral> = Parameters<Repository<T>['update']>[1];
 
 /**
  * A TypeORM repository wrapper that resolves the entity's `@Rls` policy for the current
@@ -67,10 +70,7 @@ export class ScopedRepository<T extends ObjectLiteral> {
   }
 
   /** Fetch one row under `action`'s scope, or `null` if denied / not found. */
-  async findOneScoped(
-    where: FindOptionsWhere<T>,
-    action: RlsAction = 'read',
-  ): Promise<T | null> {
+  async findOneScoped(where: FindOptionsWhere<T>, action: RlsAction = 'read'): Promise<T | null> {
     const { allowed, scope } = await this.resolve(action);
     if (!allowed) return null;
     return this.repo.findOne(this.withScope({ where }, scope));
@@ -86,7 +86,7 @@ export class ScopedRepository<T extends ObjectLiteral> {
   // ── writes ─────────────────────────────────────────────────────────────────
 
   /** Insert, first asserting each candidate satisfies the `create` scope in-memory. */
-  async insert(entities: QueryDeepPartialEntity<T> | QueryDeepPartialEntity<T>[]) {
+  async insert(entities: InsertArg<T>) {
     const { allowed, scope } = await this.resolve('create');
     if (!allowed) throw new RlsForbiddenError(this.entityName());
     if (Object.keys(scope).length > 0) {
@@ -102,10 +102,7 @@ export class ScopedRepository<T extends ObjectLiteral> {
   }
 
   /** Update, ANDing the `update` scope into the criteria so forbidden rows are untouched. */
-  async update(
-    criteria: FindOptionsWhere<T>,
-    partial: QueryDeepPartialEntity<T>,
-  ): Promise<UpdateResult> {
+  async update(criteria: FindOptionsWhere<T>, partial: UpdatePartial<T>): Promise<UpdateResult> {
     const { allowed, scope } = await this.resolve('update');
     if (!allowed) return emptyUpdate();
     return this.repo.update(this.scopedCriteria(criteria, scope), partial);

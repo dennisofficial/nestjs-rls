@@ -44,11 +44,11 @@ export async function applyPolicy<Claims = unknown, T = unknown>(
   } else {
     const fn =
       action === 'create'
-        ? policy.create ?? policy.read
+        ? (policy.create ?? policy.read)
         : action === 'update'
-          ? policy.update ?? policy.read
+          ? (policy.update ?? policy.read)
           : action === 'delete'
-            ? policy.delete ?? policy.read
+            ? (policy.delete ?? policy.read)
             : policy.read;
     decision = fn.call(policy, claims, candidate as T);
   }

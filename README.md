@@ -7,7 +7,9 @@ Declare the access rule once, on the entity:
 ```ts
 @Entity({ name: 'jobs' })
 @Rls<Job, AppClaims>((c) => ({ orgId: { $in: c.orgIds } }))
-export class Job { /* ... */ }
+export class Job {
+  /* ... */
+}
 ```
 
 Then read it from any module with the scope applied automatically:

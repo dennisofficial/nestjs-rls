@@ -1,4 +1,11 @@
-import { DynamicModule, Global, InjectionToken, Module, ModuleMetadata, Provider } from '@nestjs/common';
+import {
+  DynamicModule,
+  Global,
+  InjectionToken,
+  Module,
+  ModuleMetadata,
+  Provider,
+} from '@nestjs/common';
 import { getDataSourceToken } from '@nestjs/typeorm';
 import type { DataSource } from 'typeorm';
 import type { RlsContextConfig } from '../types';
@@ -13,11 +20,6 @@ export interface RlsModuleAsyncOptions {
   dataSource?: DataSource | string;
 }
 
-/**
- * Wires the scoped data layer. Global, so `Db` and `RLS_CONTEXT` are injectable everywhere
- * without re-importing. The app supplies `resolveContext`/`resolveClaims` via `useFactory` —
- * this module never reads request context itself (no CLS dependency).
- */
 @Global()
 @Module({})
 export class RlsModule {

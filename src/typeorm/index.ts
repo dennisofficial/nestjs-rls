@@ -89,9 +89,7 @@ export function mergeScopedWhere<T = any>(
   const merged = scopes.flatMap((s) =>
     callers.map((c) => andMergeWhere(s as Record<string, unknown>, c as Record<string, unknown>)),
   );
-  return (merged.length === 1 ? merged[0] : merged) as
-    | FindOptionsWhere<T>
-    | FindOptionsWhere<T>[];
+  return (merged.length === 1 ? merged[0] : merged) as FindOptionsWhere<T> | FindOptionsWhere<T>[];
 }
 
 // ─── internals ───────────────────────────────────────────────────────────────

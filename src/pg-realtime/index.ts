@@ -1,8 +1,12 @@
-import { type MingoFilter as PgMingoFilter, RealtimeRuleGuard, type Row } from '@workspace/pg-realtime';
+import {
+  type MingoFilter as PgMingoFilter,
+  RealtimeRuleGuard,
+  type Row,
+} from '@workspace/pg-realtime';
 import type { EntityTarget } from 'typeorm';
 import { getRlsPolicy } from '../metadata';
 import { applyPolicy } from '../policy';
-import type { RlsAction, ResolveClaims } from '../types';
+import type { ResolveClaims, RlsAction } from '../types';
 
 /**
  * A pg-realtime guard synthesized from an entity's `@Rls` policy. The realtime engine has no
@@ -29,7 +33,10 @@ class RlsRealtimeGuard<Principal, Claims> extends RealtimeRuleGuard<Principal, R
     return this.decide('delete', user);
   }
 
-  private async decide(action: RlsAction, user: Principal | null): Promise<PgMingoFilter | boolean> {
+  private async decide(
+    action: RlsAction,
+    user: Principal | null,
+  ): Promise<PgMingoFilter | boolean> {
     const policy = getRlsPolicy<Claims>(this.entity);
     if (!policy) return true; // exempt / undecorated → allow all rows of this model
     const claims = await this.resolveClaims(user);
