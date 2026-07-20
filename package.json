@@ -1,0 +1,70 @@
+{
+  "name": "@workspace/nestjs-rls",
+  "version": "0.1.0",
+  "description": "Entity-level Row-Level Security for NestJS + TypeORM + Postgres.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "import": { "types": "./src/index.ts", "default": "./dist/index.mjs" },
+      "require": { "types": "./src/index.ts", "default": "./dist/index.js" }
+    },
+    "./nest": {
+      "import": { "types": "./src/nest/index.ts", "default": "./dist/nest/index.mjs" },
+      "require": { "types": "./src/nest/index.ts", "default": "./dist/nest/index.js" }
+    },
+    "./typeorm": {
+      "import": { "types": "./src/typeorm/index.ts", "default": "./dist/typeorm/index.mjs" },
+      "require": { "types": "./src/typeorm/index.ts", "default": "./dist/typeorm/index.js" }
+    },
+    "./pg-realtime": {
+      "import": { "types": "./src/pg-realtime/index.ts", "default": "./dist/pg-realtime/index.mjs" },
+      "require": { "types": "./src/pg-realtime/index.ts", "default": "./dist/pg-realtime/index.js" }
+    }
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "pnpm tsup",
+    "typecheck": "tsc --noEmit",
+    "dev": "nodemon",
+    "prepare": "tsup"
+  },
+  "keywords": ["nestjs", "typeorm", "postgres", "rls", "row-level-security"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mingo": "^6.4.15"
+  },
+  "peerDependencies": {
+    "@nestjs/common": ">=10",
+    "@nestjs/core": ">=10",
+    "@nestjs/typeorm": ">=10",
+    "@workspace/pg-realtime": "*",
+    "reflect-metadata": ">=0.1",
+    "typeorm": ">=0.3.17"
+  },
+  "peerDependenciesMeta": {
+    "@nestjs/common": { "optional": true },
+    "@nestjs/core": { "optional": true },
+    "@nestjs/typeorm": { "optional": true },
+    "@workspace/pg-realtime": { "optional": true },
+    "reflect-metadata": { "optional": true },
+    "typeorm": { "optional": true }
+  },
+  "devDependencies": {
+    "@nestjs/common": "^10.4.15",
+    "@nestjs/core": "^10.4.15",
+    "@nestjs/typeorm": "^10.0.2",
+    "@swc/core": "^1.15.32",
+    "@types/node": "^25.6.0",
+    "@workspace/pg-realtime": "workspace:*",
+    "nodemon": "^3.1.14",
+    "prettier": "^3.8.3",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "reflect-metadata": "^0.2.2",
+    "tsup": "^8.5.1",
+    "typeorm": "^0.3.20",
+    "typescript": "^6.0.3"
+  }
+}
