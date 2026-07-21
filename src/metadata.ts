@@ -6,10 +6,6 @@ export function isRlsExempt(entity: Function): boolean {
   return Reflect.getMetadata(RLS_EXEMPT, entity) === true;
 }
 
-/**
- * Resolve an entity's policy: `@Rls(...)` metadata, then a `static rls =` fallback.
- * Returns `undefined` for exempt or undecorated entities (⇒ allow-all).
- */
 export function getRlsPolicy<Claims = unknown, T = unknown>(
   entity: Function,
 ): RlsPolicy<Claims, T> | undefined {

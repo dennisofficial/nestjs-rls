@@ -8,10 +8,6 @@ import { getRlsPolicy } from '../metadata';
 import { applyPolicy } from '../policy';
 import type { ResolveClaims, RlsAction } from '../types';
 
-/**
- * A pg-realtime guard synthesized from an entity's `@Rls` policy. The realtime engine has no
- * request context, so it resolves claims from the principal handed in at subscribe time.
- */
 class RlsRealtimeGuard<Principal, Claims> extends RealtimeRuleGuard<Principal, Row> {
   constructor(
     private readonly entity: Function,
@@ -45,10 +41,6 @@ class RlsRealtimeGuard<Principal, Claims> extends RealtimeRuleGuard<Principal, R
   }
 }
 
-/**
- * Build a pg-realtime `RealtimeRuleGuard` from an `@Rls`-decorated entity, for use as a
- * `ModelConfig.guard`. `resolveClaims` maps the subscribe-time principal to claims.
- */
 export function rlsGuard<Principal = unknown, Claims = unknown>(
   entity: EntityTarget<any>,
   resolveClaims: ResolveClaims<Principal, Claims>,
