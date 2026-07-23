@@ -47,6 +47,10 @@ getExposed(Job); // Map { 'id' => 'id', 'createdAt' => 'postedAt' }
 `getExposed` walks the prototype chain, so exposures declared on a base class are inherited —
 subclass exposures win on a name collision.
 
+`@Expose`/`getExposed` is also the `resolveExposed` plug `@workspace/pg-realtime`'s
+`RealtimeNestModule` expects — see that package's [NestJS integration](../pg-realtime/README.md#nestjs-integration-nest-realtime)
+section for the full wiring.
+
 ## Design
 
 - **Generic.** The package knows nothing about your identity model. You supply one
